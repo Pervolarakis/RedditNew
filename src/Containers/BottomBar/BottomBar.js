@@ -6,7 +6,7 @@ class BottomBar extends React.Component{
     render(){
         return(
             <div style={{background: "white", height: "38px", marginTop: 10, color: "red"}}>
-                <Button type="danger" shape="round">
+                <Button type="danger" shape="round" onClick={()=>this.props.switchMode()}>
                     <MinusCircleOutlined />
                 </Button>
             </div>

@@ -1,16 +1,20 @@
 import React from 'react';
 import axios from 'axios';
-import {Button, DatePicker} from 'antd';
-import 'antd/dist/antd.css';
+import DisplayMode from './DisplayMode';
+import DeleteMode from './DeleteMode';
+import { Avatar } from 'antd';
 class ListItem extends React.Component {
     
-    state={newPosts: 0}
+    state={newPosts: 0, icon: ""}
 
     componentDidMount(){
-        axios.get('https://api.pushshift.io/reddit/submission/search/?subreddit=redditdev&after=1593190993')
+        axios.get(`https://api.pushshift.io/reddit/submission/search/?subreddit=${this.props.txt}&after=1593190993`)
             .then((res)=>this.setState({newPosts: res.data.data.length}));
+        axios.get(`https://www.reddit.com/r/${this.props.txt}/about.json`)
+            .then((res)=> this.setState({icon: res.data.data.icon_img}))
+            .catch((error)=>console.log(error));
     }
-
+   
     
     render(){
         const Styles= {
@@ -26,14 +30,14 @@ class ListItem extends React.Component {
             },
             
         }
-        let newPostComp = (this.state.newPosts)? (<div><Button type="primary" shape="circle" disabled style={{background: "red", color: "white"}}>{this.state.newPosts}</Button></div>): (null)
+
+        let mode = (this.props.remove)? (<DeleteMode action={this.props.deleteAction}></DeleteMode>): (<DisplayMode newPosts={this.state.newPosts} txt={this.props.txt}></DisplayMode>);
+
         return (
             <div style={Styles.div}> 
-                <p>{this.props.txt}</p>
-                <div style={{display: "flex"}}>
-                    {newPostComp}
-                    <Button type="primary" href={"https://www.reddit.com/r/"+this.props.txt+"/new/"} style={{width: 90, background: "#ff6314", borderRadius: 10, color: "white", border: "1px solid grey", outline: "none"}}>Visit</Button>
-                </div>
+                <Avatar src={this.state.icon}></Avatar>
+                <p>{"r/"+this.props.txt}</p>
+                {mode}
             </div>
         );
     }

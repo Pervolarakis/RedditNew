@@ -1,19 +1,33 @@
 import React from 'react';
-import axios from 'axios';
 import ListItem from '../../Components/ListItem'
+import BottomBar from '../BottomBar/BottomBar'
 
 class Body extends React.Component{
     
-    state={loaded: true}
+
+    state={remove: false}
+
+    deleteAction = (url) => {
+        this.props.onDelete(url)
+    }
+
+    switchMode = () =>{
+        
+        this.setState({remove: !this.state.remove})
+    }
+
     render(){
-        let content= (!this.state.loaded)? (<div>Nothing to show yet!</div>) : (
-        Object.values(this.props.data).map((data,index)=>{return(<ListItem key={index} txt={data.url}></ListItem>)})
-        ); 
-    
+        
+        let content= (!this.props.loaded)? (<div>Nothing to show yet!</div>) : (Object.keys(this.props.data).map((key)=>{return(<ListItem remove={this.state.remove} key={key} deleteAction={()=>this.deleteAction(key)}txt={this.props.data[key].url}></ListItem>)}));
+        
         return(
-            <div style={{height: '290px', overflow: "auto"}}>
-                {content}
+            <div>
+                <div style={{height: '290px', overflow: "auto"}}>
+                    {content}
+                </div>
+                <BottomBar switchMode={()=>this.switchMode()}></BottomBar>
             </div>
+            
         
         );
     }
