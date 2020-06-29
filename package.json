@@ -11,6 +11,7 @@
     "axios": "^0.19.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-perfect-scrollbar": "^1.5.8",
     "react-scripts": "3.4.1",
     "write-json-file": "^4.3.0"
   },

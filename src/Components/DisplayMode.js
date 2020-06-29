@@ -8,7 +8,7 @@ function DisplayMode(props){
     return(
         <div style={{display: "flex"}}>
             {newPostComp}
-            <Button type="primary" href={"https://www.reddit.com/r/"+props.txt+"/new/"} style={{width: 90, background: "#ff6314", borderRadius: 10, color: "white", border: "1px solid grey", outline: "none"}}>Visit</Button>
+            <Button type="primary" onClick={()=>props.onVisit()} href={"https://www.reddit.com/r/"+props.txt+"/new/"} target="_blank" style={{width: 90, background: "#ff6314", borderRadius: 10, color: "white", border: "1px solid grey", outline: "none"}}>Visit</Button>
         </div>
     );
 

@@ -8,11 +8,18 @@ class ListItem extends React.Component {
     state={newPosts: 0, icon: ""}
 
     componentDidMount(){
-        axios.get(`https://api.pushshift.io/reddit/submission/search/?subreddit=${this.props.txt}&after=1593190993`)
-            .then((res)=>this.setState({newPosts: res.data.data.length}));
+        axios.get(`https://api.pushshift.io/reddit/submission/search/?subreddit=${this.props.txt}&after=${this.props.time}`)
+            .then((res)=>this.setState({newPosts: res.data.data.length}),
+             console.log(`https://api.pushshift.io/reddit/submission/search/?subreddit=${this.props.txt}&after=${this.props.time}`));
         axios.get(`https://www.reddit.com/r/${this.props.txt}/about.json`)
             .then((res)=> this.setState({icon: res.data.data.icon_img}))
             .catch((error)=>console.log(error));
+    }
+
+    onVisitClick = () =>{
+        
+        this.setState({newPosts: 0});
+        axios.put(`https://redditnew-5a43d.firebaseio.com/base/${this.props.id}.json`,{"url": this.props.txt, "time": Date.now().toString().slice(0,10)}).then((res)=>console.log(res));
     }
    
     
@@ -31,7 +38,7 @@ class ListItem extends React.Component {
             
         }
 
-        let mode = (this.props.remove)? (<DeleteMode action={this.props.deleteAction}></DeleteMode>): (<DisplayMode newPosts={this.state.newPosts} txt={this.props.txt}></DisplayMode>);
+        let mode = (this.props.remove)? (<DeleteMode action={this.props.deleteAction}></DeleteMode>): (<DisplayMode onVisit={()=>this.onVisitClick()}newPosts={this.state.newPosts} txt={this.props.txt}></DisplayMode>);
 
         return (
             <div style={Styles.div}> 
