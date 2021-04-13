@@ -1,53 +1,66 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import axios from 'axios';
 import DisplayMode from './DisplayMode';
 import DeleteMode from './DeleteMode';
 import { Avatar } from 'antd';
-class ListItem extends React.Component {
+/* global chrome */
+
+function ListItem(props) {
     
-    state={newPosts: 0, icon: ""}
+    const [newPosts,setNewPosts] = useState(0);
+    const [icon, setIcon] = useState("");
+    
 
-    componentDidMount(){
-        axios.get(`https://api.pushshift.io/reddit/submission/search/?subreddit=${this.props.txt}&after=${this.props.time}`)
-            .then((res)=>this.setState({newPosts: res.data.data.length}),
-             console.log(`https://api.pushshift.io/reddit/submission/search/?subreddit=${this.props.txt}&after=${this.props.time}`));
-        axios.get(`https://www.reddit.com/r/${this.props.txt}/about.json`)
-            .then((res)=> this.setState({icon: res.data.data.icon_img}))
-            .catch((error)=>console.log(error));
-    }
+    useEffect(()=>{
+        axios.get(`https://api.reddit.com/r/${props.txt}/new?before=${props.lastPost}`)
+            .then((res)=>setNewPosts(res.data.data.dist))
+        axios.get(`https://www.reddit.com/r/${props.txt}/about.json`)
+            .then((res)=> setIcon(res.data.data.icon_img))
+    },[props.lastPost, props.txt]);
 
-    onVisitClick = () =>{
+    const onVisitClick = () =>{
         
-        this.setState({newPosts: 0});
-        axios.put(`https://redditnew-5a43d.firebaseio.com/base/${this.props.id}.json`,{"url": this.props.txt, "time": Date.now().toString().slice(0,10)}).then((res)=>console.log(res));
+        setNewPosts(0);
+        axios.get(`https://api.reddit.com/r/${props.txt}/new?limit=1`)
+        .then(async(res)=>{
+            await props.addPostAction({
+                "url": props.txt,
+                "lastPost": res.data.data.children[0].data.name
+            })
+        })
+        .then(()=>{
+            chrome.tabs.create({ url: "https://www.reddit.com/r/"+props.txt+"/new/" });
+        })
+        .catch((error)=>console.log(error));
+
+
     }
    
-    
-    render(){
-        const Styles= {
-            div:{
-                display: "flex",
-                backgroundColor: "white",
-                color: "#ff6314",
-                margin: 2,
-                border: "1px solid #5296DD",
-                borderRadius: 5,
-                justifyContent: 'space-between',
-                padding: 10
-            },
-            
-        }
-
-        let mode = (this.props.remove)? (<DeleteMode action={this.props.deleteAction}></DeleteMode>): (<DisplayMode onVisit={()=>this.onVisitClick()}newPosts={this.state.newPosts} txt={this.props.txt}></DisplayMode>);
-
-        return (
-            <div style={Styles.div}> 
-                <Avatar src={this.state.icon}></Avatar>
-                <p>{"r/"+this.props.txt}</p>
-                {mode}
-            </div>
-        );
+    const Styles= {
+        div:{
+            display: "flex",
+            backgroundColor: "white",
+            color: "#ff6314",
+            margin: 2,
+            border: "1px solid #5296DD",
+            borderRadius: 5,
+            justifyContent: 'space-between',
+            padding: 10
+        },
+        
     }
+
+    let mode = (props.remove)? (<DeleteMode action={props.deleteAction}></DeleteMode>): (<DisplayMode onVisit={()=>onVisitClick()}newPosts={newPosts} txt={props.txt}></DisplayMode>);
+
+    return (
+        <div style={Styles.div}> 
+            {console.log("item")}
+            <Avatar src={icon}></Avatar>
+            <p>{"r/"+props.txt}</p>
+            {mode}
+        </div>
+    );
+    
 }
 
 export default ListItem;

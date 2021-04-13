@@ -1,47 +1,47 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ListItem from '../../Components/ListItem'
 import BottomBar from '../BottomBar/BottomBar'
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
 
-class Body extends React.Component{
+function Body(props){
+    
+    const [remove, setRemove] = useState(false);
     
 
-    state={remove: false}
-
-    deleteAction = (url) => {
-        this.props.onDelete(url)
+    const deleteAction = (url) => {
+        props.onDelete(url)
     }
 
-    switchMode = () =>{
-        
-        this.setState({remove: !this.state.remove})
+    const switchMode = () =>{
+        setRemove(!remove);
     }
 
-    render(){
+    
         
-        let content= (!this.props.loaded)? (<div>Nothing to show yet!</div>) : (
-            Object.keys(this.props.data).map((key)=>{ 
-            return(
-                <ListItem remove={this.state.remove} key={key} id={key} deleteAction={()=>this.deleteAction(key)} txt={this.props.data[key].url} time={this.props.data[key].time}></ListItem>
-            )
-            })
-        );
-        
+    let content= (!props.data)? (<div>Nothing to show yet!</div>) : (
+        Object.keys(props.data).map((key)=>{ 
         return(
-            <div>
-                <div style={{height: '290px'}}>
-                    <PerfectScrollbar>
-                        {content}
-                    </PerfectScrollbar>
-                </div>
-                <BottomBar switchMode={()=>this.switchMode()}></BottomBar>
+            <ListItem remove={remove} key={key} id={key} addPostAction={(newEntry)=>props.onAdd(newEntry)} deleteAction={()=>deleteAction(key)} txt={props.data[key].url} lastPost={props.data[key].lastPost}></ListItem>
+        )
+        })
+    );
+    
+    return(
+        <div>
+            {console.log("body")}
+            <div style={{height: '290px'}}>
+                <PerfectScrollbar>
+                    {content}
+                </PerfectScrollbar>
             </div>
-            
+            <BottomBar switchMode={()=>switchMode()}></BottomBar>
+        </div>
         
-        );
-    }
+    
+    );
+    
 }
 
 export default Body;

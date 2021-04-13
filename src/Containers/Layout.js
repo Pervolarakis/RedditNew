@@ -2,73 +2,75 @@ import React from 'react';
 import AddBar from './AddBar/AddBar'
 import Body from './Body/Body'
 import axios from 'axios';
+import {useState, useEffect} from 'react';
+
+/* global chrome */
 
 
 
+function Layout(){
 
-class Layout extends React.Component{
+
+    const [data, setData] = useState({});
+        
+    const addData=async (dataArg)=>{
+        setData({...data, [dataArg["url"]]: dataArg})
+    }
+
+    useEffect(()=>{
+        chrome.storage.local.get(['key'], (result) => {           
+            setData(result.key)       
+        });
+    },[]);
+
+    useEffect(()=>{
+        chrome.storage.local.set(
+            {
+                key: data
+            },function(){
+                
+            }
+        )
+    },[data]);
     
-    state={loaded: true, data: {}, reload:false}
-
-    componentDidMount(){
-        axios.get('https://redditnew-5a43d.firebaseio.com/base.json')
-            .then((res)=>
-                this.setState({data: res.data}),
-                
-        )
-        
+    const onDeleteButtonPres = (url) => {
+        const newData = {...data}
+        delete newData[url]
+        setData(newData);
     }
 
-    componentDidUpdate(){
-        if(this.state.reload){
-        axios.get('https://redditnew-5a43d.firebaseio.com/base.json')
-            .then((res)=>
-                this.setState({data: res.data,reload: false}),
-                
-        )
-        console.log("update");
-            
-    }
-
-    }
-
-    onAddButtonPress = (text)=>{
-        let epochNow = Date.now().toString().slice(0,10);
-        axios.get(`https://www.reddit.com/r/${text}/about.json`)
-        .then(()=>axios.post('https://redditnew-5a43d.firebaseio.com/base.json',{
-            "url": text,
-            "time": epochNow
-        }).then(()=>this.setState({reload: !this.state.reload})))
-        .catch((error)=>console.log(error));
-        
+    const onAddButtonPress = (text)=>{
+        axios.get(`https://api.reddit.com/r/${text}/new?limit=1`)
+        .then(async(res)=>{
+            await addData({
+                    "url": text,
+                    "lastPost": res.data.data.children[0].data.name
+            })
+        })
     } 
 
-    onDeleteButtonPres = (url) =>{
-        axios.delete(`https://redditnew-5a43d.firebaseio.com/base/${url}.json`)
-            .then(()=>this.setState({reload: !this.state.reload}))
-    }
-    
-    render(){
-        const mystyle = {
-            color: "white",
-            backgroundColor: "skyblue",
-            width: "300px",
-            height: "400px",
-            padding: "10px"
-            
-            
-          };
+
+    const mystyle = {
+        color: "white",
+        backgroundColor: "skyblue",
+        width: "300px",
+        height: "400px",
+        padding: "10px"
+        
+        
+        };
 
     
-        return(
-            <div style={mystyle}>
-                <AddBar onAdd={(txt)=>this.onAddButtonPress(txt)}></AddBar>
-                <Body data={this.state.data} loaded={this.state.loaded} onDelete={(url)=>this.onDeleteButtonPres(url)}></Body>
+    return(
+        <div style={mystyle}>
+            {console.log("main")}
+            <AddBar onAdd={(txt)=>onAddButtonPress(txt)}></AddBar> 
+            <Body data={data} onDelete={(url)=>onDeleteButtonPres(url)} onAdd={(data)=>addData(data)}></Body>
 
-            </div>
+        </div>
 
-        )
-    }
+    )
+    
 
 }
 export default Layout;

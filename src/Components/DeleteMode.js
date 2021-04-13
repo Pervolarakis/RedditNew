@@ -1,7 +1,6 @@
 import React from 'react';
 import {Button} from 'antd';
 import {MinusCircleOutlined} from '@ant-design/icons';
-import axios from 'axios';
 
 function DeleteMode(props){
 
