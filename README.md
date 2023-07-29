@@ -1,73 +1,67 @@
-<<<<<<< HEAD
-# RedditNew
-A Webapp that allows users to watch subreddits and get notified when something new is posted
-=======
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# RedditNew a Subreddit Activity Tracker Chrome Extension
 
-## Available Scripts
+![Subreddit Activity Tracker](./public/reddit-128.png)
 
-In the project directory, you can run:
+## Overview
 
-### `yarn start`
+RedditNew is a Chrome extension that allows you to keep track of the activity of your favorite subreddits directly from your browser. This extension was built using React and the Chrome API, making it lightweight and efficient.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Features
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+- **Track Subreddit Activity**: Add your favorite subreddits to the extension and get real-time updates on new posts, comments, and upvotes/downvotes.
 
-### `yarn test`
+- **Direct Reddit Access**: Click on a tracked subreddit to be redirected to the corresponding Reddit page to engage with the community.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **User-friendly Interface**: The extension provides a simple and intuitive interface for a seamless user experience.
 
-### `yarn build`
+## Screenshots
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![Screenshot 1](./image.png)
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## How to Install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone the repository or download the ZIP file.
 
-### `yarn eject`
+2. Build the extension using `npm run build` 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+3. Open Google Chrome and go to `chrome://extensions`.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. Enable Developer mode in the top right corner.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+5. Click on "Load unpacked" and select the folder where the extension files are located.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+6. The Subreddit Activity Tracker extension will be added to your browser.
 
-## Learn More
+## How to Use
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Click on the extension icon in the Chrome toolbar to open the Subreddit Activity Tracker.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. On the dashboard, click "Add Subreddit" to start tracking a subreddit.
 
-### Code Splitting
+3. Enter the name of the subreddit you want to track and customize the settings as desired.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+4. Save the settings, and the extension will start providing real-time updates for the chosen subreddit.
 
-### Analyzing the Bundle Size
+## Development
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+To make changes to this extension or contribute to its development, follow these steps:
 
-### Making a Progressive Web App
+1. Fork the repository.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+2. Clone the forked repository to your local machine.
 
-### Advanced Configuration
+3. Navigate to the extension's directory.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+4. Run `npm install` to install the necessary dependencies.
 
-### Deployment
+5. Make your desired changes and test the extension locally using `npm start`.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+6. Once you are satisfied with your changes, submit a pull request describing the modifications you've made.
 
-### `yarn build` fails to minify
+## Feedback and Support
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
->>>>>>> Initialize project using Create React App
+If you encounter any issues while using the Subreddit Activity Tracker extension or have suggestions for improvements, please [open an issue](link_to_issues) on GitHub.
+
+## License
+
+This project is licensed under the [MIT License](link_to_license).
