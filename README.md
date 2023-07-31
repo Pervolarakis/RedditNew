@@ -1,6 +1,8 @@
 # RedditNew a Subreddit Activity Tracker Chrome Extension
 
-![Subreddit Activity Tracker](./public/reddit-128.png)
+<p align="center">
+    <img src="./public/reddit-128.png">
+</p>
 
 ## Overview
 
@@ -16,7 +18,9 @@ RedditNew is a Chrome extension that allows you to keep track of the activity of
 
 ## Screenshots
 
-![Screenshot 1](./image.png)
+<p align="center">
+    <img src="./image.png">
+</p>
 
 ## How to Install
 
